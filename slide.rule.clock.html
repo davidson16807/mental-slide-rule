@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta content="text/html" charset="utf-8"></meta>
+  <title>Slide Rule</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+</head>
+<body>
+
+
+
+<svg viewBox="0 0 350 350" version="1.1"
+  xmlns="http://www.w3.org/2000/svg">
+    <style>
+      path{
+        stroke:black;
+        stroke-width:5px;
+        fill-opacity:0;
+      }
+      circle{
+        stroke:black;
+        stroke-width:1;
+        fill-opacity:0;
+      }
+
+      .marker-lg line {
+        stroke:black; 
+        stroke-width:1px;
+      }
+      .marker-lg text{
+        font-weight:bold;
+        font-size:32px;
+        dominant-baseline: middle;
+        text-anchor: middle;
+      }
+      .marker-lg .text-translator{
+        transform:translate(0,-40px);
+      }
+
+      .marker-md text{
+        font-size:12px;
+        dominant-baseline: middle;
+        text-anchor: middle;
+      }
+      .marker-md line{
+        stroke:black;
+        stroke-width:1px;
+      }
+      .marker-md .text-translator{
+        transform:translate(0,-20px);
+      }
+
+      .marker-xs text{
+        font-size:8px;
+        dominant-baseline: middle;
+        text-anchor: middle;
+      }
+      .marker-xs line{
+        stroke:black;
+        stroke-width:1px;
+      }
+      .marker-xs .text-translator{
+        transform:translate(0,-12px);
+      }
+
+      .marker-sm text{
+        font-size:10px;
+        dominant-baseline: middle;
+        text-anchor: middle;
+      }
+      .marker-sm line{
+        stroke:black;
+        stroke-width:1px;
+      }
+      .marker-sm .text-translator{
+        transform:translate(0,-12px);
+      }
+      
+      #inner-scale .marker-lg text{
+        font-size: 12px;
+      }
+      #inner-scale .marker-md text{
+        font-size: 10px;
+      }
+      #inner-scale .marker-sm text{
+        font-size: 10px;
+      }
+      #inner-scale .marker-lg .text-translator{
+        transform:translate(0,-30px);
+      }
+      #inner-scale .marker-md .text-translator{
+        transform:translate(0,-25px);
+      }
+      #inner-scale .marker-sm .text-translator{
+        transform:translate(0,-20px);
+      }
+      #inner-scale{
+        cursor:move;
+        visibility: hidden !important;
+      }
+      .multiplicand{
+        dominant-baseline: middle;
+        text-anchor: left;  
+        font-family: monospace;
+      }
+      .multiplier{
+        dominant-baseline: middle;
+        text-anchor: left;  
+        font-family: monospace;
+      }
+      .path-multiplicand{
+        stroke:red;
+        marker-end: url(#outputarrow);
+      }
+      .path-input-segment{
+        stroke:blue;
+      }
+      .path-input, .path-input-arrow{
+        stroke:blue;
+        marker-end: url(#inputarrow);
+      }
+      .path-output-segment{
+        stroke:red;
+      }
+      .path-output, .path-output-arrow{
+        stroke:red;
+        marker-end: url(#outputarrow);
+      }
+      .marker-input{
+        stroke:blue;
+        stroke-width:3px;
+      }
+    </style>
+
+    <defs>
+          <marker id="inputarrow"
+                  viewBox="0 0 25 10"
+                  refX="8" refY="3" 
+                  markerWidth="6"
+                  markerHeight="6"
+                  markerUnits="strokeWidth"
+                  orient="auto">
+                <path class="path-input-arrow" d="M 0 0 L 6 3 L 0 6 Z" />
+          </marker>
+
+          <marker id="outputarrow"
+                  viewBox="0 0 25 10"
+                  refX="8" refY="3"
+                  markerWidth="6"
+                  markerHeight="6"
+                  markerUnits="strokeWidth"
+                  orient="auto">
+                <path class="path-output-arrow" d="M 0 0 L 6 3 L 0 6 Z" />
+          </marker>
+    </defs>
+
+    <g>
+      <g id="slide-rule" transform="translate(175,175)" ng-app="slide-rule-app" ng-controller="scale-controller" 
+        ng-mousedown="dialdragstart($event)" ng-mousemove="dialdragmove($event)" ng-mouseup="dialdragend($event)" ng-mouseleave="dialdragend($event)">
+
+
+        <circle id="pivot" cx="0", cy="0" r="5"/>
+        <g id="outer-scale">
+          <circle cx="0" cy="0" r="100"/>
+          <g  ng-repeat="marker in model.markers" 
+              class="{{marker.type}} fraction" 
+              transform="rotate({{degrees(marker.value)}}) translate(0,-100)">
+              <line x1="0" y1="{{-marker.length}}" x2="0" y2="0" />
+              <g class="text-translator">
+                <text class="decimal" transform="rotate({{-degrees(marker.value)}})">{{marker.label || pretty(marker.value)}}</text>
+              </g>
+          </g>
+        </g>
+        <g id="inner-scale" transform="rotate({{new_dial_angle}})" ng-mousedown="dialdragstart($event)" ng-mousemove="dialdragmove($event)" ng-mouseup="dialdragend($event)" ng-mouseleave="dialdragend($event)" >
+          <circle cx="0" cy="0" r="98"/>
+          <g  ng-repeat="marker in model.markers" 
+              class="{{marker.type}} fraction" 
+              transform="rotate({{degrees(marker.value)}}) translate(0,-100) rotate(180)">
+              <line x1="0" y1="{{-marker.length}}" x2="0" y2="0" />
+              <g class="text-translator">
+                <text class="label" transform="rotate(90)">{{marker.label}}</text>
+              </g>
+          </g>
+        </g>    
+        <!-- <path d="M {{pos(95, old_mouse_angle).x}},{{pos(95, old_mouse_angle).y}} 
+                 A 95,95 
+                 0 0 {{diff(old_mouse_angle, new_mouse_angle)>180? 1:0}} 
+                 {{pos(95, new_mouse_angle).x}},{{pos(95, new_mouse_angle).y}}"> -->
+        <!-- <text class="multiplicand" transform="translate(-15,15)">
+          {{pretty(value(old_mouse_angle))}}
+        </text>
+        <text class="multiplicand" transform="translate(-15,-15)">
+          {{pretty(value(old_mouse_angle))}}
+        </text>
+        <text class="multiplicand" transform="translate(15,15)">
+          ×{{pretty(value(new_mouse_angle))}}
+        </text>
+        <text class="multiplicand" transform="translate(15,-15)">
+          /{{pretty(1/value(new_mouse_angle))}}
+        </text> -->
+        <path ng-repeat="path in model.paths"
+              class="{{path.type}}" 
+              d="M {{pos(path.radius, degrees(path.start)).x}},{{pos(path.radius, degrees(path.start)).y}} 
+              A {{path.radius}},{{path.radius}} 
+              0 0 {{diff(degrees(path.start), degrees(path.stop))>180? 1:0}} 
+              {{pos(path.radius, degrees(path.stop)).x}},{{pos(path.radius, degrees(path.stop)).y}}"/>
+      </g>
+    </g>
+
+  <script  type="text/javascript">
+
+      var steps = [
+        { label:    '1',    value: 1,         type: 'marker-lg' },
+        { label: '¹⁄₈',  value: 1/8,       type: 'marker-lg' },
+        { label: '¹⁄₂π', value: 1.58,      type: 'marker-lg' },
+        { label:    '2',    value: 2,         type: 'marker-lg' },
+        { label: '¹⁄₄',  value: 1/4,       type: 'marker-lg' },
+        
+        { label:    '8',    value: 8,         type: 'marker-lg' },
+        { label: '2π',   value: 6.31,      type: 'marker-lg' },
+        { label:    '¹⁄₂',  value: 5,         type: 'marker-lg' },
+        { label:    '4',    value: 4,         type: 'marker-lg' },
+
+        { label: 'π',    value: 3.16,      type: 'marker-lg' },
+      ];
+
+      var base2 = [
+        { label:    '3.33',    value: 1,         type: 'marker-lg' },
+        { label:    '0.33',  value: 1/8,       type: 'marker-lg' },
+        { label:    '0.66', value: 1.58,      type: 'marker-lg' },
+        { label:    '1',    value: 2,         type: 'marker-lg' },
+        { label:    '1.33',  value: 1/4,       type: 'marker-lg' },
+        
+        { label:    '3',    value: 8,         type: 'marker-lg' },
+        { label:    '2.66',   value: 6.31,      type: 'marker-lg' },
+        { label:    '2.33',  value: 5,         type: 'marker-lg' },
+        { label:    '2',    value: 4,         type: 'marker-lg' },
+
+        { label: '1.66',    value: 3.16,      type: 'marker-lg' },
+      ];
+
+      var multiples9 = [
+        { value: 1/9, type: 'marker-sm' },
+        { value: 2/9, type: 'marker-sm' },
+        { value: 4/9, type: 'marker-sm' },
+        { value: 5.55, type: 'marker-sm' },
+        { value: 8.88, type: 'marker-sm' },
+      ];
+
+      var halves = [
+        { value: Math.pow(10, 0.05),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.1),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.15),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.2),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.25),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.3),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.35),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.4),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.45),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.5),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.55),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.6),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.65),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.7),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.75),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.8),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.85),  type: 'marker-md' },
+        // { value: Math.pow(10, 0.9),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.95),  type: 'marker-md' },
+      ];
+
+      var fourths = [
+        { value: Math.pow(10, 0.025), type: 'marker-sm' },
+        { value: Math.pow(10, 0.05),  type: 'marker-md' },
+        { value: Math.pow(10, 0.075), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.1),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.125), type: 'marker-sm' },
+        { value: Math.pow(10, 0.15),  type: 'marker-md' },
+        { value: Math.pow(10, 0.175), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.2),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.225), type: 'marker-sm' },
+        { value: Math.pow(10, 0.25),  type: 'marker-md' },
+        { value: Math.pow(10, 0.275), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.3),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.325), type: 'marker-sm' },
+        { value: Math.pow(10, 0.35),  type: 'marker-md' },
+        { value: Math.pow(10, 0.375), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.4),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.425), type: 'marker-sm' },
+        { value: Math.pow(10, 0.45),  type: 'marker-md' },
+        { value: Math.pow(10, 0.475), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.5),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.525), type: 'marker-sm' },
+        { value: Math.pow(10, 0.55),  type: 'marker-md' },
+        { value: Math.pow(10, 0.575), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.6),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.625), type: 'marker-sm' },
+        { value: Math.pow(10, 0.65),  type: 'marker-md' },
+        { value: Math.pow(10, 0.675), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.7),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.725), type: 'marker-sm' },
+        { value: Math.pow(10, 0.75),  type: 'marker-md' },
+        { value: Math.pow(10, 0.775), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.8),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.825), type: 'marker-sm' },
+        { value: Math.pow(10, 0.85),  type: 'marker-md' },
+        { value: Math.pow(10, 0.875), type: 'marker-sm' },
+        // { value: Math.pow(10, 0.9),   type: 'marker-lg' },
+        { value: Math.pow(10, 0.925), type: 'marker-sm' },
+        { value: Math.pow(10, 0.95),  type: 'marker-md' },
+        { value: Math.pow(10, 0.975), type: 'marker-sm' },
+      ];
+
+      var fifths = [
+        { value: Math.pow(10, 0.02), type: 'marker-xs' },
+        { value: Math.pow(10, 0.04), type: 'marker-xs' },
+        { value: Math.pow(10, 0.06), type: 'marker-xs' },
+        { value: Math.pow(10, 0.08), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.12), type: 'marker-xs' },
+        { value: Math.pow(10, 0.14), type: 'marker-xs' },
+        { value: Math.pow(10, 0.16), type: 'marker-xs' },
+        { value: Math.pow(10, 0.18), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.22), type: 'marker-xs' },
+        { value: Math.pow(10, 0.24), type: 'marker-xs' },
+        { value: Math.pow(10, 0.26), type: 'marker-xs' },
+        { value: Math.pow(10, 0.28), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.32), type: 'marker-xs' },
+        { value: Math.pow(10, 0.34), type: 'marker-xs' },
+        { value: Math.pow(10, 0.36), type: 'marker-xs' },
+        { value: Math.pow(10, 0.38), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.42), type: 'marker-xs' },
+        { value: Math.pow(10, 0.44), type: 'marker-xs' },
+        { value: Math.pow(10, 0.46), type: 'marker-xs' },
+        { value: Math.pow(10, 0.48), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.52), type: 'marker-xs' },
+        { value: Math.pow(10, 0.54), type: 'marker-xs' },
+        { value: Math.pow(10, 0.56), type: 'marker-xs' },
+        { value: Math.pow(10, 0.58), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.62), type: 'marker-xs' },
+        { value: Math.pow(10, 0.64), type: 'marker-xs' },
+        { value: Math.pow(10, 0.66), type: 'marker-xs' },
+        { value: Math.pow(10, 0.68), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.72), type: 'marker-xs' },
+        { value: Math.pow(10, 0.74), type: 'marker-xs' },
+        { value: Math.pow(10, 0.76), type: 'marker-xs' },
+        { value: Math.pow(10, 0.78), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.82), type: 'marker-xs' },
+        { value: Math.pow(10, 0.84), type: 'marker-xs' },
+        { value: Math.pow(10, 0.86), type: 'marker-xs' },
+        { value: Math.pow(10, 0.88), type: 'marker-xs' },
+
+        { value: Math.pow(10, 0.92), type: 'marker-xs' },
+        { value: Math.pow(10, 0.94), type: 'marker-xs' },
+        { value: Math.pow(10, 0.96), type: 'marker-xs' },
+        { value: Math.pow(10, 0.98), type: 'marker-xs' },
+
+      ];
+
+      var model = { 
+        markers: [ ],
+        paths: [
+          // { radius: 95, start: 1.06, stop: 2, type: 'path-multiplicand' },
+          // { radius: 95, start: 2.5, stop: 7.44, type: 'path-multiplicand' },
+        ]
+      };
+      
+      
+      
+      var querystring = [];
+      for(var i = 0, 
+        hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&'); 
+        i < hashes.length; i++)
+      {
+          var hash = hashes[i].split('=');
+          querystring.push(hash[0]);
+          querystring[hash[0]] = decodeURIComponent(hash[1]);
+      }
+
+      var app = angular.module('slide-rule-app', []);
+      app.controller('scale-controller', function($scope) {
+        
+      var marker_length = {
+        "marker-sm": 3,
+        "marker-md": 6,
+        "marker-lg": 12,
+      }
+      var markers = model.markers;
+      if (querystring.markers == "halves") {
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, halves);
+      } else if (querystring.markers == "fifths") {
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, fifths);
+      } else if (querystring.markers == "fourths") {
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, fourths);
+      } else if (querystring.markers == "multiples9"){
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, multiples9);
+      } else if (querystring.markers == "base2") {
+        markers.push.apply(markers, base2);
+      } else if (querystring.markers == "base_e"){
+        markers.push.apply(markers, base_e);
+      } else if (querystring.markers !== void 0){
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, JSON.parse(querystring.markers));
+      } else {
+        markers.push.apply(markers, steps);
+      };
+      for (var i = 0; i < markers.length; i++) {
+        marker = markers[i];
+        marker.length = marker_length[marker.type.split(' ')[0]];
+        markers[i] = marker;
+      };
+      model.markers = markers;
+
+      var paths = model.paths;
+      paths.push.apply(paths, JSON.parse(querystring.paths !== void 0? querystring.paths : '[]'));
+
+      $scope.pretty = function (value, precision) {
+        precision = 1/100;
+        var normalized = (value / Math.pow(10, Math.round(Math.log10(value))));
+        var normalized = normalized < 1? normalized * 10 : normalized;
+        var rounded = Math.round(normalized / precision) * precision;
+        return (rounded).toString().substring(0,4);
+      }
+      $scope.model = model;
+      $scope.value = function(degrees) {
+        return Math.pow(10, degrees/360);
+      }
+      $scope.radians = function(value) {
+        return Math.log10(value) * 2*Math.PI
+      }
+      $scope.degrees = function(value) {
+        return Math.log10(value) * 360;
+      }
+      $scope.pos = function(radius, degrees) {
+        var radians = degrees * Math.PI / 180;
+        return { 
+          y:-radius * Math.cos(radians),
+          x: radius * Math.sin(radians)
+        };
+      }
+      $scope.diff = function(degrees1, degrees2) {
+        return Math.abs(degrees1 - degrees2 + 360) % 360 ;
+      }
+
+      var pivotx, pivoty;
+      var is_dragging = false;
+      $scope.old_mouse_angle = 0;
+      $scope.new_mouse_angle = 0;
+      $scope.old_dial_angle = 0;
+      $scope.new_dial_angle = 0;
+      $scope.dialdragstart = function(e) {
+        var rect = $('#pivot')[0].getBoundingClientRect();
+        pivotx = (rect.left + rect.right) / 2;
+        pivoty = (rect.top + rect.bottom) / 2;
+        var x = e.clientX;
+        var y = e.clientY;
+        $scope.old_mouse_angle = Math.atan2((x - pivotx), -(y - pivoty)) * 180/Math.PI ;
+        is_dragging = true;
+        e.preventDefault();
+      }
+      $scope.dialdragmove = function(e) {
+        if (!is_dragging) {
+          return;
+        };
+        var x = e.clientX;
+        var y = e.clientY;
+        $scope.new_mouse_angle = Math.atan2((x - pivotx), -(y - pivoty)) * 180/Math.PI ;
+        $scope.new_dial_angle = $scope.new_mouse_angle - $scope.old_mouse_angle + $scope.old_dial_angle;
+
+        console.log($scope.diff($scope.new_mouse_angle, $scope.old_mouse_angle));
+        e.preventDefault();
+      }
+      $scope.dialdragend = function(e) {
+        is_dragging = false;
+        $scope.old_dial_angle = $scope.new_dial_angle;
+
+        e.preventDefault();
+      }
+    });
+    
+  </script>
+</svg>
+
+</body>
+</html>
