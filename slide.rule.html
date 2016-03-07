@@ -114,7 +114,14 @@
 
 <p>When school children memorize their multiplication tables, they generally memorize no more than 32 combinations, so we should be able to start simple, with `n&lt;32`. Unlike the school children, though, every number we memorize goes further. Multiplication tables have a space complexity of `O(N^2)`, where `N` is the number of digits that can be multiplied. That means if we want to add just one extra number to our multiplication table, the number of combinations we have to memorize increases exponentially. Not only that, but the multiplication table only works well for multiplication. On the other hand, our slide rule only has a space complexity of `O(N)`. That means if we want to add one extra number to our ruler, we only have to remember one extra value. As we will see, its power goes far beyond multiplication.</p>
 
-<p>It turns out `n = 10` is a rather good start, and if you want to learn more you can set n to some other multiple of 10. Quite a few increments on this scale are conveniently close to whole numbers, those being 2, 4, 5, and 8. This probably has to do with the fact 10 is divisible by 2 and 5, but this is just a guess. Other numbers resemble rational fractions of 10, those being 1.25 and 2.5. There are 3 increments on this scale that correspond to neither whole numbers nor rational fractions, but we find these numbers are very close to `pi` and its multiples, ¹/₂`pi` and `2 pi`. It's fortunate that multiplication by `pi` is so common that most normal slide rules already come with a special notch for `pi`. Using `n = 10` has an added benefit: it leverages our existing knowledge of addition in base 10. </p>
+<p>It turns out `n = 10` is a rather good start, and if you want to learn more you can set n to some other multiple of 10.</p>
+
+<div class="figure-wrapper">
+	<iframe width="600px" height="135px" align="middle" frameborder="0" scrolling="no" src='slide.rule.linear.html'></iframe>
+	<p>Click the bottom ruler to drag</p>
+</div>
+
+<p>Quite a few increments on this scale are conveniently close to whole numbers, those being 2, 4, 5, and 8. This probably has to do with the fact 10 is divisible by 2 and 5, but this is just a guess. Other numbers resemble rational fractions of 10, those being 1.25 and 2.5. There are 3 increments on this scale that correspond to neither whole numbers nor rational fractions, but we find these numbers are very close to `pi` and its multiples, ¹/₂`pi` and `2 pi`. It's fortunate that multiplication by `pi` is so common that most normal slide rules already come with a special notch for `pi`. Using `n = 10` has an added benefit: it leverages our existing knowledge of addition in base 10. </p>
 
 <p class="emphasis">By visualizing the slide rule, we can divide and multiply just as easily as we add and subtract.</p>
 
