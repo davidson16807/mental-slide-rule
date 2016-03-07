@@ -98,7 +98,6 @@
       }
       #inner-scale{
         cursor:move;
-        visibility: hidden !important;
       }
       .multiplicand{
         dominant-baseline: middle;
@@ -173,7 +172,7 @@
               </g>
           </g>
         </g>
-        <g id="inner-scale" transform="rotate({{new_dial_angle}})" ng-mousedown="dialdragstart($event)" ng-mousemove="dialdragmove($event)" ng-mouseup="dialdragend($event)" ng-mouseleave="dialdragend($event)" >
+        <g id="inner-scale" ng-show="model.inner_scale" transform="rotate({{new_dial_angle}})" ng-mousedown="dialdragstart($event)" ng-mousemove="dialdragmove($event)" ng-mouseup="dialdragend($event)" ng-mouseleave="dialdragend($event)" >
           <circle cx="0" cy="0" r="98"/>
           <g  ng-repeat="marker in model.markers" 
               class="{{marker.type}} fraction" 
@@ -423,6 +422,8 @@
         markers[i] = marker;
       };
       model.markers = markers;
+
+      model.inner_scale = querystring.inner_scale || false;
 
       var paths = model.paths;
       paths.push.apply(paths, JSON.parse(querystring.paths !== void 0? querystring.paths : '[]'));

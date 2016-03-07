@@ -58,12 +58,18 @@
 			font-family: Garamond, 'EB Garamond', Baskerville, 'Baskerville Old Face', 'Hoefler Text', 'Times New Roman', serif;
 		}
 		h1{
+			margin-top: 10%;
+			margin-bottom: 10%;
 			margin-left: -14.6%;
 		}
 		h2{
+			margin-top: 10%;
+			margin-bottom: 1%;
 			margin-left: -9%;
 		}
 		h3{
+			margin-top: 5%;
+			margin-bottom: 0%;
 			margin-left: -5.5%;
 		}
 		.emphasis{
@@ -77,7 +83,7 @@
 
 
 <div class="article">
-<h1>I shoved a slide rule up my brain (and now it's stuck)</h1>
+<h1>I shoved a slide rule up my brain! (and now it's stuck)</h1>
 <p>Slide rules are really neat. </p>
 
 <p>They give you a great intuitive understanding of mathematics. If you never used them before I highly recommend learning. Here's a primer. If you haven't noticed, you can perform addition and subtraction using two ordinary rulers. There's obviously nothing magical here: you just mete out two distances, stacking them end to end, then measure their sum. 
@@ -100,17 +106,17 @@
 
 <p class="emphasis">If line spacing were constant though, we could multiply just by visualizing the slide rule. </p>
 
-<p>It is possible to create a slide rule where line spacing is constant, but our lines could no longer represent linear increments. They would instead represent <b>logarithmic</b> increments. Every increment would represent a multiplication by some constant number.</p>
+<p>It is possible to create a slide rule where line spacing is constant, but our lines could no longer represent linear increments. They would instead represent <b>logarithmic</b> increments. Every increment would represent <b>a multiplication by some constant number</b>.</p>
 
-<p>Let's try to design this sort of slide rule. There are many values we could assign to its increments, but there are constraints we should consider. The scale must approximate the form `a^(1//n), a^(2//n), … a^(n//n)`. This is necessary to keep line spacing constant. Here, a is the base of our log scale. For us humans, it makes sense to set `a = 10`, since anything else will reduce the usability of our slide rule. If `a != 10`, our slide rule would not repeat once at every power of 10 and we'd likely have to convert number bases before calculations.
+<p>Let's try to design this sort of slide rule. There are many values we could assign to its increments, but there are constraints we should consider. The scale must approximate the form `a^(1//n), a^(2//n), … a^(n//n)`. This is necessary to keep line spacing constant. Here, `a` is the base of our log scale. For us humans, it makes sense to set `a = 10`, since anything else will reduce the usability of our slide rule. If `a != 10`, our slide rule would not repeat once at every power of 10 and we'd likely have to convert number bases before calculations.
 
 <p>With these constraints in mind, we can browse from a pool of candidate log scales. Any viable log scale is of the form `10^(1//n), 10^(2//n), … 10^(n//n)`, where `n` is the number of increments on the scale. `n` is also the number of increments we'll need to memorize, so n should be small enough to remember but large enough to offer precision. </p>
 
-<p>When school children memorize their multiplication tables, they generally memorize no more than 32 combinations, so we should be able to start simple, with `n&lt;32`. Unlike the school children, though, every number we memorize goes further. Multiplication tables have a space complexity of `O(N^2)`, where `N` is the number of digits that can be multiplied. Plus, the multiplication table only works well for multiplication. On the other hand, our slide rule has a space complexity of `O(N)`, and as we will see, its power goes far beyond multiplication.</p>
+<p>When school children memorize their multiplication tables, they generally memorize no more than 32 combinations, so we should be able to start simple, with `n&lt;32`. Unlike the school children, though, every number we memorize goes further. Multiplication tables have a space complexity of `O(N^2)`, where `N` is the number of digits that can be multiplied. That means if we want to add just one extra number to our multiplication table, the number of combinations we have to memorize increases exponentially. Not only that, but the multiplication table only works well for multiplication. On the other hand, our slide rule only has a space complexity of `O(N)`. That means if we want to add one extra number to our ruler, we only have to remember one extra value. As we will see, its power goes far beyond multiplication.</p>
 
 <p>It turns out `n = 10` is a rather good start, and if you want to learn more you can set n to some other multiple of 10. Quite a few increments on this scale are conveniently close to whole numbers, those being 2, 4, 5, and 8. This probably has to do with the fact 10 is divisible by 2 and 5, but this is just a guess. Other numbers resemble rational fractions of 10, those being 1.25 and 2.5. There are 3 increments on this scale that correspond to neither whole numbers nor rational fractions, but we find these numbers are very close to `pi` and its multiples, ¹/₂`pi` and `2 pi`. It's fortunate that multiplication by `pi` is so common that most normal slide rules already come with a special notch for `pi`. Using `n = 10` has an added benefit: it leverages our existing knowledge of addition in base 10. </p>
 
-<p class="emphasis">By visualizing the log scale, we can divide and multiply just as easy as we add and subtract.</p>
+<p class="emphasis">By visualizing the slide rule, we can divide and multiply just as easily as we add and subtract.</p>
 
 <p>Because there are 10 numbers on our scale, our answers will be accurate to within ~10% the actual answer, assuming we round correctly. We can achieve greater accuracy by memorizing additional numbers.</p>
 
@@ -119,7 +125,8 @@
 <p>The scale repeats at every power of 10, just as with arabic numerals, so we can visualize the scale as a sort of clock. Just like a clock, the numbers "roll over" if they go above or below the limits of the scale - 2 hours past 11:00 is 1:00.</p>
 
 <div class="figure-wrapper">
-	<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src="slide.rule.clock.html"></iframe>
+	<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?inner_scale=1'></iframe>
+	<p>click the inner wheel to drag</p>
 </div>
 
 <p>The clock is divided into two halves. The halves are marked by two values. The first value is 1, which is multiplicative unity. The second is `sqrt(10)`, which is close to `pi`. There are four "steps" within each half. There are a total of 10 steps. The halves have a symmetry about them, so that the values on one half bear the same mantissa as the inverse of values on the other half. On the left half, we have `4`, `5`, `2 pi`, and `8`. On the right half, we have the mantissae of ¹/₄, ¹/₅ (or 2), ¹/₂`pi` (very close to `pi`/₂), and ¹/₈.</p>
@@ -130,12 +137,12 @@
 	<div class="answer">
 		<p>1.58 (¹/₂`pi`) is the 2nd step from 1, so we find 2 on the clock and count 2 steps clockwise: 2, 2.5, `pi`. The mantissa is near the same as `pi`'s, so the answer is close to 314.</p>
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":2,"stop":3.16,"type":"path-input"},{"radius":95,"start":1,"stop":2,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":2,"stop":3.16,"type":"path-input"},{"radius":95,"start":1,"stop":2,"type":"path-output"}]'></iframe>
 		</div>
 
 		You can also go the other way around: start at 1.58 and count 3 steps clockwise
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":3.16,"type":"path-output"},{"radius":95,"start":1,"stop":1.58,"type":"path-input"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":3.16,"type":"path-output"},{"radius":95,"start":1,"stop":1.58,"type":"path-input"}]'></iframe>
 		</div>
 
 		I find it's easier to visualize smaller distances, so in this case I start from 2 and count 2 steps clockwise.
@@ -146,12 +153,12 @@
 	<div class="answer">
 		<p>1.58 (¹/₂`pi`) is the 2nd step from 1. 8 is the 9th step on the scale. Therefore, we find 2 on the clock and count 8 steps clockwise. The mantissa is about 1.25, so the answer is close to 1250.</p>
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":4.5,"type":"path-output-segment"},{"radius":95,"start":4.4,"stop":1.25,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":4.5,"type":"path-output-segment"},{"radius":95,"start":4.4,"stop":1.25,"type":"path-output"}]'></iframe>
 		</div>
 
 		There's a better way to visualize it though. Short distances are easier to visualize than large distances. 8 is much closer to 1 in the counter-clockwise direction, so it's easier to start at 1.58 and look 1 step counter-clockwise.
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.58,"stop":1.26,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.58,"stop":1.26,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -163,13 +170,13 @@
 		<p>Take ¹/₂`pi` and count 3 steps counter-clockwise: ¹/₂`pi`, ¹/₈, 1, 8. The mantissa is 8, so the answer is close to 0.8. The answer is infact 0.79.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1.58,"stop":8,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1.58,"stop":8,"type":"path-output"}]'></iframe>
 		</div>
 
 		Since these numbers are close together, an easier way is to count the steps from 1.58 to 2. The two numbers are seperated only by a single step, so the answer must be 1 step counter-clockwise from 1.
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":2,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":8,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":2,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":8,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -179,7 +186,7 @@
 		<p>Our answer here is merely the inverse of the last. The two numbers are seperated only by a single step, so the answer must be 1 step clockwise from 1. This is a general rule of thumb: if the denominator is larger, count the steps going down; if the denominator is smaller, count the steps going up.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1.58,"stop":2,"type":"path-input"},{"radius":95,"start":1,"stop":1.25,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1.58,"stop":2,"type":"path-input"},{"radius":95,"start":1,"stop":1.25,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -189,13 +196,13 @@
 		<p>Just as with multiplying by 8, there are 2 ways to go about division. There are 9 clockwise steps between 1 and 8, and that means to divide we can count 9 steps <b>counter-clockwise</b>.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":5.6,"type":"path-output-segment"},{"radius":95,"start":5.7,"stop":2,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1.58,"stop":5.6,"type":"path-output-segment"},{"radius":95,"start":5.7,"stop":2,"type":"path-output"}]'></iframe>
 		</div>
 
 		<p>But if the number is greater than `sqrt(10)`, it make sense to consider the other direction. There's only 1 counter-clockwise step between 1 and 8, and for division that means we can count 1 step <b>clockwise</b>.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.58,"stop":2,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.58,"stop":2,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -217,14 +224,14 @@
 		<p>Easy - 0.2. ¹/₂`pi` is the 2nd step, and each of the 10 steps indicate a `log_10` increment of 0.1. This is due to the way we designed our scale - I tricked you into learning the `log_10` table. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":1.58,"type":"path-multiplicand"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":1.58,"type":"path-multiplicand"}]'></iframe>
 		</div>
 	</div>
 </div>
 
 <p>This brings us to our next point:</p>
 
-<p class="emphasis">Visualizing the slide rule is very similar to memorizing the `log_10` table</p
+<p class="emphasis">Visualizing the slide rule is very similar to memorizing the `log_10` table</p>
 
 <p>Both are equally valid strategies. The difference lies with the part of the brain your using. If I memorized the `log_10` table and was asked to multiply two numbers, I'd map the two numbers to their `log_10` values, add the `log_10` values together, then map the sum back to get the answer. With the `log_10` table, I'm using rote memorization along with existing skillsets in addition. If I memorized the slide rule, I'd find the two numbers on the slide rule, visualize the addition, and estimate the order of magnitude. There's still rote memorization to a certain extent, but now I'm also using more spatial reasoning, intuition, and visual memory.  </p>
 
@@ -235,7 +242,7 @@
 		<p>Easy - 2.2. It's the same mantissa, but now it's on the order of `10^2`, so it's `0.2 + 2 = 2.2`.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":95,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":89,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":89,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":83,"start":1,"stop":1.58,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":95,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":95,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":89,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":89,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":83,"start":1,"stop":1.58,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -245,7 +252,7 @@
 		<p>We know that's the 2nd step, so the answer must be double the distance, on the 4th step. The answer is near 2.5. The exact answer to 4 figures is 2.465.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -255,7 +262,7 @@
 		<p>Again, we know that's the 2nd step, so the answer is half that, on the 1st step. The answer is near 1.25. The exact answer to 4 figures is 1.253.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.24,"type":"path-input"},{"radius":105,"start":1.26,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.25,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.24,"type":"path-input"},{"radius":105,"start":1.26,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.25,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -264,7 +271,7 @@
 	<div class="answer">
 		<p>That's on the 6th step, just a step past `pi`, near 4, and in fact it is 3.87. </p>
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -274,7 +281,7 @@
 		<p>That's on the 8th step, 2 steps shy of 10, near `2 pi`, and in fact it is 6.076. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"},{"radius":95,"start":3.9,"stop":6.3,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"},{"radius":95,"start":3.9,"stop":6.3,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -283,7 +290,7 @@
 	<div class="answer">
 		<p>Near 10, and in fact it is 9.54. </p>
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"},{"radius":95,"start":3.9,"stop":6.3,"type":"path-output"},{"radius":95,"start":6.32,"stop":1,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?paths=[{"radius":105,"start":1,"stop":1.58,"type":"path-input"},{"radius":95,"start":1,"stop":1.58,"type":"path-output"},{"radius":95,"start":1.6,"stop":2.465,"type":"path-output"},{"radius":95,"start":2.49,"stop":3.87,"type":"path-output"},{"radius":95,"start":3.9,"stop":6.3,"type":"path-output"},{"radius":95,"start":6.32,"stop":1,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -297,8 +304,8 @@
 		<p>Well, 9 is the squareroot of 81. Look at the slide rule and we know `log_10(81) ~ 1.9`, so `log_10(9) ~ 1.9/2`, or 0.95. To be exact, it is 0.954. It's just over half past the last step. </p>
 
 		<div class="figure-wrapper">
-			<!-- <iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":9,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.02,"type":"path-output-segment"},{"radius":95,"start":3.00,"stop":9,"type":"path-output"},{"radius":89,"start":9.02,"stop":2.7,"type":"path-input-segment"},{"radius":89,"start":2.69,"stop":8.1,"type":"path-input"}]'></iframe> -->
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":9,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":9.05,"type":"path-input"},{"radius":95,"start":8.95,"stop":8.1,"type":"path-output"}]'></iframe>
+			<!-- <iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":9,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.02,"type":"path-output-segment"},{"radius":95,"start":3.00,"stop":9,"type":"path-output"},{"radius":89,"start":9.02,"stop":2.7,"type":"path-input-segment"},{"radius":89,"start":2.69,"stop":8.1,"type":"path-input"}]'></iframe> -->
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":9,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":9.05,"type":"path-input"},{"radius":95,"start":8.95,"stop":8.1,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -307,8 +314,8 @@
 		<p>Well, 7 is the squareroot of 49. We know `log_1049 ~ 1.7`, so `log_10(7) ~ 0.85`. It is in fact 0.845. There's another way to figure out: `72 = 8*9`, so 7 is half step shy of 8.</p>
 
 		<div class="figure-wrapper">
-			<!-- <iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":7,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.02,"type":"path-output-segment"},{"radius":95,"start":3.00,"stop":7,"type":"path-output"},{"radius":89,"start":7.02,"stop":2.02,"type":"path-input-segment"},{"radius":89,"start":2.00,"stop":4.9,"type":"path-input"}]'></iframe> -->
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":7,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":7.05,"type":"path-input"},{"radius":95,"start":6.95,"stop":4.9,"type":"path-output"}]'></iframe>
+			<!-- <iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":7,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.02,"type":"path-output-segment"},{"radius":95,"start":3.00,"stop":7,"type":"path-output"},{"radius":89,"start":7.02,"stop":2.02,"type":"path-input-segment"},{"radius":89,"start":2.00,"stop":4.9,"type":"path-input"}]'></iframe> -->
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":7,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":7.05,"type":"path-input"},{"radius":95,"start":6.95,"stop":4.9,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -317,7 +324,7 @@
 		<p>We know `3^2 = 9`, and `log_10(9) ~ 0.95`, so `log_10(3) ~ 0.475`. That's quarter step shy of a half circle. It is in fact 0.477. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":3,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.00,"type":"path-output"},{"radius":95,"start":3.02,"stop":9.0,"type":"path-input"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"fraction":"","value":3,"type":"marker-md"}]&paths=[{"radius":95,"start":1,"stop":3.00,"type":"path-output"},{"radius":95,"start":3.02,"stop":9.0,"type":"path-input"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -367,7 +374,7 @@
 </table>
 
 <div class="figure-wrapper">
-	<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=multiples9'></iframe>
+	<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=multiples9'></iframe>
 </div>
 
 <p>The actual numbers will be given shortly, but the above explanation is a useful mneumonic for memorizing the precise values of half steps. Once you memorize the precise values you can improve your accuracy to 6%. </p>
@@ -460,7 +467,7 @@
 <p>The scale appears as follows:</p>
 
 <div class="figure-wrapper">
-	<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths'></iframe>
+	<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths'></iframe>
 </div>
 
 <p>When I first memorized the scale, I was driving alone on a long car ride. There wasn't a lot I could do that was productive without becoming distacted, so I'd recite the scale to myself, occasionally referring to the copy of the slide rule above. By the end of the trip, I could recite the thing forwards and backwards. I was also able to recite the inverse of every quarter step, the log of every quarter step, and the multiples of every quarter step from 1 to 1.25. I recommend doing something similar for anyone interested in learning the system.</p>
@@ -484,27 +491,23 @@
 		<p>There's an easy way we can visualize the base 2 log scale: the distances on any log scale represent the exact same thing, but the <b>units</b> we use to measure distance will differ. We can think of the log base as this unit of measure. On our base 10 scale, we indicate distance relative to the number "10", and due to the design of our clock, this is the distance covered by one full turn. On a base 2 scale, we indicate distance relative to 2, which is the third step on our clock. This means the "1" appears on the third step clockwise from the top, and everything else is scaled according to that.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=base2&paths=[{"radius":95,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":95,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":89,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":89,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":83,"start":1,"stop":1.58,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=base2&paths=[{"radius":95,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":95,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":89,"start":1,"stop":3.16,"type":"path-output-segment"},{"radius":89,"start":3.17,"stop":1,"type":"path-output-segment"},{"radius":83,"start":1,"stop":1.58,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
 
 <div class="question">What's the natural log of 158? 
-	<div class="answer">
-		<div class="hint">
-			<p>First we have to find `log_10(e)`.</p>
-		</div>
-		
+	<div class="hint">
+		<p>First we have to find `log_10(e)`.</p>
 		<div class="hint">
 			<p>Well, e is between the 4th and 5th step, so `log_10(e)` is 0.45. To convert the log base we know we must divide by `log_10(e)`. </p>
-		</div>
-		
-		<div class="answer">
+			<div class="answer">
 				<p>We know `log_10(158) = 2.2`, so `ln(158)` is just `2.2 // 4.5`, which is 3.5 steps clockwise of 3.5 steps, 2 steps past `pi`, or 5. When we run it through a calculator, we find the exact answer to 4 figures is 5.056 - not too shabby. </p>
 		
 				<p>Natural log is so common it might serve us just to remember that number - if we want the natural log of a number, just take `log_10` and find the number 3.5 steps clockwise from that (well, 3.6 if you must be exact). </p>
 
 				<p>However, as with log₂, there is another way. If we remember `ln(10) = 2.3`, then we know 158 is `2*2.3 + ln(1.58)`. 1.58 is on the 2nd step, and 2.71 maps to ~4.5, so what's `2//4.5`? 2 is 2 steps from `pi`, so `2//pi` is 2 steps from 1, and `2//4.5` is 1.5 steps past that, around 4.44. `2*2.3 + 0.444 = 5.0`.</p>
+			</div>
 		</div>
 	</div>
 </div>
@@ -515,7 +518,7 @@
 		<p>`e` is between 4.25 steps and 4.5 steps. We'll interpolate that to 4.4 steps. That means `e^2.5` is near `2.5*4.4` steps. Ok, so what's `2.5*4.4`? 4.4 is a 1.5 steps past `pi`. 2.5 is 1 step short of `pi`, so `2.5*pi` is 1 step short of 1, and our answer is just 1.5 steps past that, on the first half step, or 1.12. So what's on the 1.12th step? That's around 1.25. Our intuition tells us it's on the order of ten, so we guess 12.5. The exact answer is 12.18 </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":2.71,"type":"path-input"},{"radius":95,"start":2.73,"stop":7.34,"type":"path-input"},{"radius":89,"start":7.36,"stop":1.218,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":2.71,"type":"path-input"},{"radius":95,"start":2.73,"stop":7.34,"type":"path-input"},{"radius":89,"start":7.36,"stop":1.218,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -528,10 +531,10 @@
 			<p>We find the distance covered by 1.58 (finding the logarithm), add two of those distances together (finding the sum), then answer the number that corresponds to that distance (finding the power of 10). In other words, we understand that all the following are equivalent: </p>
 					
 			<table>
-				<tr>`log_10(1.58^2)`</tr>
-				<tr>`log_10(1.58 * 1.58) `</tr>
-				<tr>`log_10(1.58) + log_10(1.58) `</tr>
-				<tr>`2log_10(1.58) `</tr>
+				<tr><td>`log_10(1.58^2)`</td></tr>
+				<tr><td>`log_10(1.58 * 1.58) `</td></tr>
+				<tr><td>`log_10(1.58) + log_10(1.58) `</td></tr>
+				<tr><td>`2log_10(1.58) `</td></tr>
 			</table>	
 			<p>As a result, we know `log_10(1.58^1.58) = 1.58*log_10(1.58)`. We are asked to find `1.58^1.58`, which we know is `10^(1.58 * log_10(1.58))`. </p>
 			
@@ -559,7 +562,7 @@
 	<div class="answer">
 		<p>What would happen if we place the mantissa for those numbers on our clock? Most of numbers fit on the left side of the clock. This indicates the set is more likely a log distribution.</p>
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"label":" ","value":0.2,"type":"marker-md"},{"label":" ","value":7.8,"type":"marker-md"},{"label":" ","value":6.9,"type":"marker-md"},{"label":" ","value":9.8,"type":"marker-md"},{"label":" ","value":5.4,"type":"marker-md"},{"label":" ","value":8.7,"type":"marker-md"},{"label":" ","value":2.7,"type":"marker-md"},{"label":" ","value":7.5,"type":"marker-md"},{"label":" ","value":7.1,"type":"marker-md"},{"label":" ","value":8.5,"type":"marker-md"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"label":" ","value":0.2,"type":"marker-md"},{"label":" ","value":7.8,"type":"marker-md"},{"label":" ","value":6.9,"type":"marker-md"},{"label":" ","value":9.8,"type":"marker-md"},{"label":" ","value":5.4,"type":"marker-md"},{"label":" ","value":8.7,"type":"marker-md"},{"label":" ","value":2.7,"type":"marker-md"},{"label":" ","value":7.5,"type":"marker-md"},{"label":" ","value":7.1,"type":"marker-md"},{"label":" ","value":8.5,"type":"marker-md"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -569,7 +572,7 @@
 		<p>Some of the numbers appear to the left of the clock, but it's definitely not so skewed to that side. This suggests it's more likely a log-based distribution.</p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"label":" ","value":5.7,"type":"marker-md"},{"label":" ","value":1.9,"type":"marker-md"},{"label":" ","value":4.2,"type":"marker-md"},{"label":" ","value":3.4,"type":"marker-md"},{"label":" ","value":7.1,"type":"marker-md"},{"label":" ","value":2.0,"type":"marker-md"},{"label":" ","value":1.2,"type":"marker-md"},{"label":" ","value":3.8,"type":"marker-md"},{"label":" ","value":1.0,"type":"marker-md"},{"label":" ","value":4.9,"type":"marker-md"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=[{"label":" ","value":5.7,"type":"marker-md"},{"label":" ","value":1.9,"type":"marker-md"},{"label":" ","value":4.2,"type":"marker-md"},{"label":" ","value":3.4,"type":"marker-md"},{"label":" ","value":7.1,"type":"marker-md"},{"label":" ","value":2.0,"type":"marker-md"},{"label":" ","value":1.2,"type":"marker-md"},{"label":" ","value":3.8,"type":"marker-md"},{"label":" ","value":1.0,"type":"marker-md"},{"label":" ","value":4.9,"type":"marker-md"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -601,7 +604,7 @@
 		<p>On further reflection you find 65 is almost halfway between the two nearest quarter steps: 6.30 and 6.66. You find the answer must then lie between 44 and 47. You interpolate and answer 45.5. There is in fact 46 minutes left. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":65,"stop":60,"type":"path-input"},{"radius":95,"start":5,"stop":46,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":65,"stop":60,"type":"path-input"},{"radius":95,"start":5,"stop":46,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -612,7 +615,7 @@
 		<p>7.08 is 3 quarter steps past 6, so the answer is 3 quarter steps shy of 5: 4.22. There's around 42 minutes left to your journey. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":70,"stop":60,"type":"path-input"},{"radius":95,"start":5,"stop":42.2,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":70,"stop":60,"type":"path-input"},{"radius":95,"start":5,"stop":42.2,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -625,7 +628,7 @@
 		<p>Your check is three quarters shy of 1. The tip therefore is three quarters shy of 17%, which is a quarter step past ¹/₂`pi`. The tip is a half step shy of ¹/₂`pi`, or $1.41. Actual answer is $1.44. </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":89,"start":1,"stop":1.7,"type":"path-input"},{"radius":95,"start":8.47,"stop":1.44,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":89,"start":1,"stop":1.7,"type":"path-input"},{"radius":95,"start":8.47,"stop":1.44,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -641,7 +644,7 @@
 			<p>Want the correction? The correction is ³/₈ `* 0.4`, which is the same mantissa as `4*`³/₈ or `12/8`. The mantissa is a step behind three quarters, or a quarter shy of `1 - 9.44`. We intuit the correction is 0.0944, so a closer answer is `9.44+0.0944`, or 9.53. The correct answer is 9.525. </p>
 
 			<div class="figure-wrapper">
-				<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":3,"stop":3.2,"type":"path-input"},{"radius":95,"start":1,"stop":9.53,"type":"path-output"}]'></iframe>
+				<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":3,"stop":3.2,"type":"path-input"},{"radius":95,"start":1,"stop":9.53,"type":"path-output"}]'></iframe>
 			</div>
 		</div>
 	</div>
@@ -651,10 +654,11 @@
 
 <div class="question">$3.50 for milk - what's the total with tax?
 	<div class="hint">
+		Let's say sales tax is 106%.
 		<div class="answer">
 			<p>Every quarter step on the log scale represents a multiplication by 106%, so sales tax is super easy. Just look a quarter step past 3.50. It's around $3.75 with tax. </p>
 			<div class="figure-wrapper">
-				<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":1.06,"type":"path-output"},{"radius":95,"start":3.50,"stop":3.71,"type":"path-output"}]'></iframe>
+				<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":1.06,"type":"path-output"},{"radius":95,"start":3.50,"stop":3.71,"type":"path-output"}]'></iframe>
 			</div>
 		</div>
 	</div>
@@ -671,21 +675,20 @@
 				<p>4:5 is a step shy of 1. 1.9 is a quarter shy of 2, so `1.9*0.8` is a quarter shy of `1.58 - 1.5`. 15" inches is our answer. The exact answer is 15.2.</p>
 
 				<div class="figure-wrapper">
-					<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.9,"stop":1.5,"type":"path-output"}]'></iframe>
+					<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":8,"type":"path-input"},{"radius":95,"start":1.9,"stop":1.5,"type":"path-output"}]'></iframe>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="question">
-	<p>What's the height?</p>
+<div class="question">What's the height?
 
 	<div class="answer">
 		<p>The ratio is 3:5, now. That's a 2 and a quarter shy of 1. 2.25 shy of 19 is 2.5 shy of 3 steps, or a half step past `1 - 1.12`. 11.2" is our answer. The exact answer is 11.4". </p>
 
 		<div class="figure-wrapper">
-			<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":6,"type":"path-input"},{"radius":95,"start":1.9,"stop":1.12,"type":"path-output"}]'></iframe>
+			<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":6,"type":"path-input"},{"radius":95,"start":1.9,"stop":1.12,"type":"path-output"}]'></iframe>
 		</div>
 	</div>
 </div>
@@ -715,7 +718,7 @@
 							</ul>
 
 						<div class="figure-wrapper">
-							<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":4.50,"type":"path-output"},{"radius":95,"start":4.41,"stop":1.97,"type":"path-output"},{"radius":85,"start":1.97,"stop":2.32,"type":"path-output"},{"radius":85,"start":4,"stop":4.44,"type":"path-output"},{"radius":105,"start":1,"stop":4.0,"type":"path-input"}]'></iframe>
+							<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":4.50,"type":"path-output"},{"radius":95,"start":4.41,"stop":1.97,"type":"path-output"},{"radius":85,"start":1.97,"stop":2.32,"type":"path-output"},{"radius":85,"start":4,"stop":4.44,"type":"path-output"},{"radius":105,"start":1,"stop":4.0,"type":"path-input"}]'></iframe>
 							<p>How to find 1-cos(40°)</p>
 						</div>
 					</div>
@@ -742,9 +745,9 @@
 					<p>We run it through the computer and find the correct answer is `0.81+0.59i`. Noice.</p>
 
 					<div class="wide figure-wrapper">
-						<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":4,"type":"path-input"},{"radius":95,"start":3.95,"stop":1.6,"type":"path-output"},{"radius":85,"start":1.6,"stop":1.92,"type":"path-output"}]'></iframe>
+						<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":4,"type":"path-input"},{"radius":95,"start":3.95,"stop":1.6,"type":"path-output"},{"radius":85,"start":1.6,"stop":1.92,"type":"path-output"}]'></iframe>
 
-						<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":6,"type":"path-input"},{"radius":95,"start":5.95,"stop":3.6,"type":"path-output"},{"radius":85,"start":3.6,"stop":3.98,"type":"path-output"}]'></iframe>
+						<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":6,"type":"path-input"},{"radius":95,"start":5.95,"stop":3.6,"type":"path-output"},{"radius":85,"start":3.6,"stop":3.98,"type":"path-output"}]'></iframe>
 					</div>
 				</div>
 			</div>
@@ -773,9 +776,9 @@
 
 
 					<div class="wide figure-wrapper">
-						<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":0.81,"type":"path-input"},{"radius":85,"start":3.3,"stop":2.67,"type":"path-output"},{"radius":95,"start":2.8,"stop":2.268,"type":"path-output"}]'></iframe>
+						<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":0.81,"type":"path-input"},{"radius":85,"start":3.3,"stop":2.67,"type":"path-output"},{"radius":95,"start":2.8,"stop":2.268,"type":"path-output"}]'></iframe>
 
-						<iframe width="400px" height="400px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":0.59,"type":"path-input"},{"radius":85,"start":3.3,"stop":1.94,"type":"path-output"},{"radius":95,"start":2.8,"stop":1.65,"type":"path-output"}]'></iframe>
+						<iframe width="400px" height="365px" align="middle" frameborder="0" scrolling="no" src='slide.rule.clock.html?markers=fourths&paths=[{"radius":95,"start":1,"stop":0.59,"type":"path-input"},{"radius":85,"start":3.3,"stop":1.94,"type":"path-output"},{"radius":95,"start":2.8,"stop":1.65,"type":"path-output"}]'></iframe>
 					</div>
 				</div>
 			</div>
@@ -789,8 +792,8 @@
     Make sure you start small. Start by remembering the half steps. Recite the scale forwards and backwards. Try your hand at multiplying, dividing, and exponentiating random numbers. I personally train with a scripting language like python or R, but a couple d10 or d20 dice work, too. 
 </p>
 
-<p>
-    Once you have the basics down pat, you can memorize smaller step increments to achieve a greater degree of accuracy. 
+<p class="emphasis">
+    Once you have the basics down, you can memorize smaller increments to achieve greater accuracy. 
 </p>
 
 <p>First, you have to decide which increment you want to memorize. When you're memorizing a scale, it's important to start with an increment that accomplishes two things: 1.) it's easy to remember the scale, and 2.) it works well in base 10. A multiple like 1.1 is a great example. It's easy to calculate multiples of 1.1. For whole numbers, you just repeat the number twice, so for example `3 * 1.1 = 3.3`. For multiple digits, the first and last digit stay the same, and every other number gets added to it's neighbor, so for example `1.25 * 1.1` is:</p>
@@ -851,9 +854,9 @@
 And of course the increment keeps increasing. The good news is this: it doesn't matter for our purposes. The error remains in line with the precision we want to accomplish. For us the mneumonic works just fine: 
 </p>
 
-In the first full step, the fifths steps increment by ~0.05
-In the second full step, the fifths steps increment by ~0.06
-In the third full step, the fifths steps increment by ~0.08
+<p>In the first full step, the fifths steps increment by ~0.05</p>
+<p>In the second full step, the fifths steps increment by ~0.06</p>
+<p>In the third full step, the fifths steps increment by ~0.08</p>
 
 <p>
 Now, let's say you do want to memorize the fifths scale. You memorize the scale, paying particular attention to the steps from 1 to 1.25. As you did with the half steps, you ought to recite the scale and try your hand at some random problems. If you memorized the quarter steps, the fifth steps should come easier - the ¹/₅ and ⁴/₅ steps are only slightly off from the ¹/₄ and 3/4 steps. 
@@ -866,13 +869,13 @@ If we wish to go further, we can even remember every tenth of a step (multiplica
 <h3>The Tenths Scale</h3>
 <table>
 	<tr>
-		<td>1</td>
-		<td>2</td>
-		<td>3</td>
-		<td>4</td>
-		<td>5</td>
-		<td>6</td>
-		<td>8</td>
+		<th>1</th>
+		<th>2</th>
+		<th>3</th>
+		<th>4</th>
+		<th>5</th>
+		<th>6</th>
+		<th>8</th>
 	</tr>
 	<tr>
 		<td>1.025</td>
