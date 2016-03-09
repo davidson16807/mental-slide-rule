@@ -124,7 +124,7 @@
 
 <p>With these constraints in mind, we can browse from a pool of candidate log scales. Any viable log scale is of the form `10^(1//n), 10^(2//n), … 10^(n//n)`, where `n` is the number of increments on the scale. `n` is also the number of increments we'll need to memorize, so n should be small enough to remember but large enough to offer precision. </p>
 
-<p>When school children memorize their multiplication tables, they generally memorize no more than 32 combinations, so we should be able to start simple, with `n&lt;32`. Unlike the school children, though, every number we memorize goes further. Multiplication tables have a space complexity of `O(N^2)`, where `N` is the number of digits that can be multiplied. That means if we want to add just one extra number to our multiplication table, the number of combinations we have to memorize increases exponentially. Not only that, but the multiplication table only works well for multiplication. On the other hand, our slide rule only has a space complexity of `O(N)`. That means if we want to add one extra number to our ruler, we only have to remember one extra value. As we will see, its power goes far beyond multiplication.</p>
+<p>When school children memorize their multiplication tables, they generally memorize no more than 32 combinations, so we should be able to start simple, with `n&lt;32`. Unlike the school children, though, every number we memorize goes further. Multiplication tables have a space complexity of `O(N^2)`, where `N` is the number of digits that can be multiplied. That means if we want to add just one extra number to our multiplication table, the number of combinations we have to memorize increases exponentially. Not only that, but the multiplication table only works well for multiplication. On the other hand, our slide rule only has a space complexity of `O(N)`. That means if we want to add one extra number to our ruler, we only have to remember one extra value. And as we will see, memorizing that value will allow us to do way more than multiplication.</p>
 
 <p>It turns out `n = 10` is a rather good start, and if you want to learn more you can set n to some other multiple of 10.</p>
 
@@ -380,19 +380,19 @@
 		<td>`10^0.6`</td>
 		<td>` ~~ 4`,</td>
 		<td>so `10^0.65 	`</td>
-		<td>`~~` 4.444…</td>
+		<td>`~~ 4.444…`</td>
 	</tr>
 	<tr>
 		<td>`10^0.7`</td>
 		<td>` ~~ 5`,</td>
 		<td>so `10^0.75 	`</td>
-		<td>`~~` 5.555…</td>
+		<td>`~~ 5.555…`</td>
 	</tr>
 	<tr>
 		<td>`10^0.775`</td>
 		<td>`~~6`,</td>
 		<td>so `10^0.825 	`</td>
-		<td>`~~ 6.666… ~~` 2/3</td>
+		<td>`~~ 6.666… ~~` ²/₃</td>
 	</tr>
 	<tr>
 		<td>`10^0.85`</td>
@@ -907,7 +907,7 @@ And of course the increment keeps increasing. The good news is this: it doesn't 
 </ul>
 
 <p>
-Now, let's say you do want to memorize the fifths scale. You memorize the scale, paying particular attention to the steps from 1 to 1.25. As you did with the half steps, you ought to recite the scale and try your hand at some random problems. If you memorized the quarter steps, the fifth steps should come easier - the ¹/₅ and ⁴/₅ steps are only slightly off from the ¹/₄ and 3/4 steps. 
+Now, let's say you do want to memorize the fifths scale. You memorize the scale, paying particular attention to the steps from 1 to 1.25. As you did with the half steps, you ought to recite the scale and try your hand at some random problems. If you memorized the quarter steps, the fifth steps should come easier - the ¹/₅ and ⁴/₅ steps are only slightly off from the ¹/₄ and ³/₄ steps. 
 </p>
 
 <p>
