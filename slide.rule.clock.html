@@ -365,6 +365,15 @@
 
       ];
 
+      var eighths = [];
+      for (var i = 0; i < 1; i+=(0.025/2)){
+        eighths.push({ value: Math.pow(10, i), type: 'marker-sm' });
+      }
+      var tenths = [];
+      for (var i = 0; i < 1; i+=0.01){
+        tenths.push({ value: Math.pow(10, i), type: 'marker-sm' });
+      }
+    
       var model = { 
         markers: [ ],
         paths: [
@@ -397,6 +406,12 @@
       if (querystring.markers == "halves") {
         markers.push.apply(markers, steps);
         markers.push.apply(markers, halves);
+      } else if (querystring.markers == "eighths") {
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, eighths);
+      } else if (querystring.markers == "tenths") {
+        markers.push.apply(markers, steps);
+        markers.push.apply(markers, tenths);
       } else if (querystring.markers == "fifths") {
         markers.push.apply(markers, steps);
         markers.push.apply(markers, fifths);
